@@ -15,6 +15,10 @@ public class Employee {
     private String firstname;
     @Column(name = "employee_lastname")
     private String lastname;
+    @Column(unique = true)
+    private String username;
+    private String password;
+    private Boolean active;
     @ManyToOne()
     @JoinColumn(name = "employee_position")
     private Position position;
