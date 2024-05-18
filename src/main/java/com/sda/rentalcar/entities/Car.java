@@ -11,6 +11,7 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
+
     private Long Id;
     private String brand;
     private String model;
