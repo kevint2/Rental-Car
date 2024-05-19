@@ -10,10 +10,9 @@ public class Revenue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long revenueId;
-    @Column(name = "revenue_amount")
     @OneToOne
-    @JoinColumn(name = "rental")
     private Rental rental;
+    @Column(name = "revenue_amount")
     private Double income;
     public Revenue(){
         this.income = 0.0;

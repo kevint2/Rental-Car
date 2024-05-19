@@ -69,8 +69,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findById(id).orElseThrow(()-> GenericException.notFound(id));
     }
     @Override
-    public Employee findByUSername(String username){
+    public Employee findByUsername(String username){
         return employeeRepository.findByUsername(username).orElseThrow(()->GenericException.notFound(username));
+    }
+
+    @Override
+    public Employee findEmployeeLoggedIn(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findByUsername(username);
     }
 
 }
