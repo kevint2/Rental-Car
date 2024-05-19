@@ -15,7 +15,9 @@ public class Revenue {
     @JoinColumn(name = "rental")
     private Rental rental;
     private Double income;
-
+    public Revenue(){
+        this.income = 0.0;
+    }
 
 
 }
