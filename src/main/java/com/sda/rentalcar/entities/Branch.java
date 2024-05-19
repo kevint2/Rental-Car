@@ -13,7 +13,8 @@ import java.util.List;
 public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "branche_id")
+    @Column(name = "branch_id")
+
     private Long id;
     private String address;
     @OneToMany(mappedBy = "branch")
