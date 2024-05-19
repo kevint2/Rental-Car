@@ -11,5 +11,7 @@ public interface EmployeeService {
 
     Employee findById(Long id);
 
-    Employee findByUSername(String username);
+    Employee findByUsername(String username);
+
+    Employee findEmployeeLoggedIn();
 }
