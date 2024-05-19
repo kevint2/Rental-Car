@@ -7,7 +7,6 @@ import com.sda.rentalcar.services.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 @Service
 @Transactional
 public class CarServiceImpl implements CarService {
@@ -36,5 +35,8 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car findByModel(String model){
     return carRepository.findByModel(model).orElseThrow(()->GenericException.notFound(model));
+    }
+    public Car findById(Long id){
+    return carRepository.findById(id).orElseThrow(()->GenericException.notFound(id));
     }
 }
