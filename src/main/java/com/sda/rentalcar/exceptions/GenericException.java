@@ -34,4 +34,5 @@ public class GenericException extends RuntimeException{
         String message =String.format( "User with username %s exist" , username);
         return new GenericException(message,400);
     }
+
 }
