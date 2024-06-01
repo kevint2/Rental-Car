@@ -1,5 +1,6 @@
 package com.sda.rentalcar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,5 +20,8 @@ public class Costumer {
     private String email;
     @Column(name = "costumer_address")
     private String address;
+    @ManyToOne
+    @JoinColumn(name = "rental")
+    private Rental rental;
 
 }

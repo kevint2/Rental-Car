@@ -5,9 +5,13 @@ import com.sda.rentalcar.entities.Employee;
 import org.springframework.http.ResponseEntity;
 
 public interface EmployeeService {
-    Employee create(Employee employee, boolean isManager);
+    Employee create(Employee employee, boolean isManager,Long branchId);
+
+
 
     ResponseEntity<?> login(AuthRequest authRequest);
+
+    Employee createOwner(Employee employee);
 
     Employee findById(Long id);
 

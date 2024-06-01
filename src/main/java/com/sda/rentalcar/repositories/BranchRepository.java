@@ -3,5 +3,9 @@ package com.sda.rentalcar.repositories;
 import com.sda.rentalcar.entities.Branch;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface BranchRepository extends JpaRepository<Branch , Long> {
+    List<Branch>findAllByRentalId(Long rentalId);
+
 }

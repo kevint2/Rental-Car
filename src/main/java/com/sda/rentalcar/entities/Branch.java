@@ -23,4 +23,7 @@ public class Branch {
     @JsonIgnore
     @OneToMany(mappedBy = "branch")
     private List<Car>cars;
+    @ManyToOne
+    @JoinColumn(name = "rental")
+    private Rental rental;
 }

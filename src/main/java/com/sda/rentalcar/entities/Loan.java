@@ -3,7 +3,8 @@ package com.sda.rentalcar.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Entity
 @Data
@@ -13,12 +14,12 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "loan_id")
     private Long id;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "employee")
     private Employee employee;
-    private LocalDateTime rentalOfRental;
+    private LocalDate dateOfRental;
     @OneToOne
     private Reservation reservation;
-    private String ccomment;
+    private String comment;
 
 }

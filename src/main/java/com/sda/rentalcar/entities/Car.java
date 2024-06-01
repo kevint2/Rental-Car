@@ -20,7 +20,7 @@ public class Car {
     private String color;
     private Long mileage;
     private Status status;
-    private Long amount;
+    private Double amount;
     @ManyToOne
     @JoinColumn(name = "branch")
     private Branch branch;

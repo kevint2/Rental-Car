@@ -1,11 +1,14 @@
 package com.sda.rentalcar.services.Impl;
 
 import com.sda.rentalcar.dto.AuthRequest;
+import com.sda.rentalcar.entities.Branch;
 import com.sda.rentalcar.entities.Employee;
 import com.sda.rentalcar.entities.Position;
 import com.sda.rentalcar.exceptions.GenericException;
+import com.sda.rentalcar.repositories.BranchRepository;
 import com.sda.rentalcar.repositories.EmployeeRepository;
 import com.sda.rentalcar.repositories.PositionRepository;
+import com.sda.rentalcar.repositories.RentalRepository;
 import com.sda.rentalcar.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
+    private RentalRepository rentalRepository;
+    @Autowired
+    private BranchRepository branchRepository;
+    @Autowired
     private PositionRepository positionRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -31,17 +38,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public Employee create(Employee employee, boolean isManager) {
+    public Employee create(Employee employee, boolean isManager,Long branchId) {
         if (employee.getEmployeeId() == null) {
             if (!employeeRepository.existsEmployeeByUsername(employee.getUsername())) {
                 if (!isManager) {
-                    Position position = positionRepository.findById("POSITION_EMPLOYEE").get();
+                    Position position = positionRepository.findById("ROLE_EMPLOYEE").get();
                    employee.setPosition(position);
                 } else {
-                    Position position = positionRepository.findById("POSITION_MANAGER").get();
+                    Position position = positionRepository.findById("ROLE_MANAGER").get();
                     employee.setPosition(position);
                 }
                 employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+                Branch branch = branchRepository.findById(branchId).get();
+                employee.setBranch(branch);
                 return employeeRepository.save(employee);
             } else {
                 throw GenericException.UsernameExist(employee.getUsername());
@@ -50,6 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw GenericException.idISNotnull();
         }
     }
+
 
     @Override
     public ResponseEntity<?> login(AuthRequest authRequest) {
@@ -63,6 +73,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         } catch (Exception e) {
             return ResponseEntity.status(401).body(e.getMessage());
         }
+    }
+    @Override
+    public Employee createOwner(Employee employee){
+        Position position = positionRepository.findById("ROLE_OWNER").get();
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+        employee.setPosition(position);
+        return employeeRepository.save(employee);
     }
     @Override
     public Employee findById(Long id){

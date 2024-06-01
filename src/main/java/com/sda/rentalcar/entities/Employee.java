@@ -1,5 +1,6 @@
 package com.sda.rentalcar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,6 +24,7 @@ public class Employee {
     @JoinColumn(name = "employee_position")
     private Position position;
     @ManyToOne()
+    @JsonIgnore
     @JoinColumn(name = "branch")
     private Branch branch;
 

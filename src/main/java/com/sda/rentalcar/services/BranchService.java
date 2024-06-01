@@ -5,9 +5,9 @@ import com.sda.rentalcar.entities.Branch;
 import java.util.List;
 
 public interface BranchService {
-    Branch create(Branch branch);
+    Branch create(Branch branch ,Long id);
 
-    Branch update(Branch branch);
 
-    List<Branch> showAll();
+
+    List<Branch> showAllByRental(Long rentalId);
 }

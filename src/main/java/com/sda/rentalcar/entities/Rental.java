@@ -1,5 +1,6 @@
 package com.sda.rentalcar.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,8 +15,13 @@ public class Rental {
     @Column(name = "rental_id")
     private Long id;
     private String name;
-    private String owner;
-    @OneToMany()
-    @JoinColumn(name = "branches")
+    @JsonIgnore
+    @OneToMany(mappedBy = "rental")
     private List<Branch>branches;
+    @JsonIgnore
+    @OneToMany(mappedBy = "rental")
+    private List<Costumer>costumers;
+    @OneToOne
+    @JoinColumn(name = "owner")
+    private Employee employee;
 }
