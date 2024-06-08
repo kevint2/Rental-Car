@@ -7,7 +7,6 @@ import com.sda.rentalcar.services.*;
 import com.sda.rentalcar.static_data.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,6 +110,27 @@ public class ReservationServiceImpl implements ReservationService {
         }else {
             throw GenericException.notFound(reservationId);
         }
+
+    }
+
+    @Override
+    public Reservation extendReservation(String email, Long id, Integer days){
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(()-> GenericException.notFound(id));
+        if (reservation.getCostumer().getEmail().equals(email)){
+            Car car = reservation.getCar();
+            List<Reservation> reservations = reservationRepository.findAllByCar_IdAndDateFromIsAfter(car.getId(), reservation.getDateFrom());
+            reservations.forEach(r-> {
+                if (r.getDateFrom().equals(reservation.getDateFrom().plusDays(days))||
+                r.getDateFrom().isBefore(reservation.getDateFrom().plusDays(days))) {
+                    throw new RuntimeException("This car is reserved in this days.");
+                }
+            });
+                reservation.setDateTo(reservation.getDateTo().plusDays(days));
+                return reservationRepository.save(reservation);
+        } else {
+            throw new RuntimeException("This reservation is not made by a costumer.");
+        }
+
     }
 
 
@@ -122,4 +142,6 @@ public class ReservationServiceImpl implements ReservationService {
                 || start.isAfter(end)
                 || start.isAfter(LocalDate.now()));
     }
+
+
 }

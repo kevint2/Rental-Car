@@ -24,4 +24,9 @@ public class ReservationController {
     public void cancelReservation(@RequestParam Long reservationId){
         reservationService.cancelReservation(reservationId);
     }
+
+    @PostMapping("/extendReservation")
+    public Reservation extendReservation(@RequestParam String email, @RequestParam Long id, @RequestParam Integer days){
+        return reservationService.extendReservation(email, id, days);
+    }
 }

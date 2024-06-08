@@ -8,4 +8,6 @@ public interface ReservationService {
     Reservation returnCar(Long reservationId, Long branchId);
 
     void  cancelReservation(Long reservationId);
+
+    Reservation extendReservation(String email, Long id, Integer days);
 }
