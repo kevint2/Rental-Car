@@ -8,7 +8,6 @@ import com.sda.rentalcar.exceptions.GenericException;
 import com.sda.rentalcar.repositories.BranchRepository;
 import com.sda.rentalcar.repositories.EmployeeRepository;
 import com.sda.rentalcar.repositories.PositionRepository;
-import com.sda.rentalcar.repositories.RentalRepository;
 import com.sda.rentalcar.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
-    @Autowired
-    private RentalRepository rentalRepository;
     @Autowired
     private BranchRepository branchRepository;
     @Autowired
@@ -94,6 +93,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee findEmployeeLoggedIn(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return findByUsername(username);
+    }
+    @Override
+    public List<Employee>getAllEmployeesByBranch(Long branchId){
+        Branch branch = branchRepository.findById(branchId).orElseThrow(()->GenericException.notFound(branchId));
+        return branch.getEmployees();
     }
 
 }

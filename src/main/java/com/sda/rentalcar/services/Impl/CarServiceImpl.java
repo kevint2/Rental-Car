@@ -8,13 +8,17 @@ import com.sda.rentalcar.repositories.CarRepository;
 import com.sda.rentalcar.services.CarService;
 import com.sda.rentalcar.static_data.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @Transactional
+@EnableScheduling
 public class CarServiceImpl implements CarService {
     @Autowired
     private CarRepository carRepository;
@@ -32,16 +36,18 @@ public class CarServiceImpl implements CarService {
             throw GenericException.idISNotnull();
         }
     }
+    @Override
+    public Car update(Long carId,Long mileage){
+        Car car = carRepository.findById(carId).orElseThrow(()->GenericException.notFound(carId));
+        car.setMileage(mileage);
+        return car;
+    }
 
     @Override
-    public Car updateStatusToUnavailable(Long carId) {
-        if (carRepository.findById(carId).isPresent()) {
-            Car car = findById(carId);
-            car.setStatus(Status.UNAVAILABLE);
+    public Car updateStatus(Long carId,Status status) {
+            Car car = carRepository.findById(carId).orElseThrow(()->GenericException.notFound(carId));
+            car.setStatus(status);
             return carRepository.save(car);
-        } else {
-            throw GenericException.notFound(carId);
-        }
     }
 
     @Override
@@ -66,5 +72,17 @@ public class CarServiceImpl implements CarService {
         } else {
             throw GenericException.notFound(branchId);
         }
+    }
+    @Override
+    public List<Car>findAll(){
+        return carRepository.findAll();
+    }
+    @Scheduled(cron = "0 00 01 * * ?", zone = "Europe/Rome")
+    public void checkReservation(){
+        List<Car> cars = carRepository.findAllByDate(LocalDate.now());
+     cars.forEach(car -> {
+         car.setStatus(Status.BOOKED);
+         carRepository.save(car);
+     });
     }
 }

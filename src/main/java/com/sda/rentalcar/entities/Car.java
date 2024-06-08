@@ -21,6 +21,7 @@ public class Car {
     private Long mileage;
     private Status status;
     private Double amount;
+    private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "branch")
     private Branch branch;

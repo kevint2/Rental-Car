@@ -34,7 +34,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final String[] ownerEndpoints = {"branch/create", "employee/createManager",
             "costumer/getAllCostumers"};
     private final String[] managerEndpoints = {"employee/createEmployee", "car/create"};
-    private final String[] employeeEndpoints = {"reservation/create", "costumer/findByEmail" +
+    private final String[] employeeEndpoints = {"reservation/create","costumer/create", "costumer/findByEmail" +
             "", "reservation/cancelReservation",
             "reservation/returnCar", "car/updateStatusToUnavailable"};
     private final String[] adminEndpoints = {"rental/create", "employee/createOwner"};

@@ -50,7 +50,6 @@ public class ReservationServiceImpl implements ReservationService {
 
             if (!result.get()) {
                 Car car = carRepository.findById(carId).get();
-                car.setStatus(Status.BOOKED);
                 reservation.setCar(car);
                 reservation.setBranchLoan(car.getBranch());
                 Costumer costumer = costumerRepository.findByEmail(costumerEmail);
@@ -73,23 +72,25 @@ public class ReservationServiceImpl implements ReservationService {
             }
 
         } else {
-            throw GenericException.idISNotnull();
+            throw GenericException.notFound(carId);
         }
     }
     @Override
     public Reservation returnCar(Long reservationId ,Long branchId){
         if (reservationRepository.findById(reservationId).isPresent()){
             Reservation reservation = reservationRepository.findById(reservationId).get();
-            Branch branch = branchRepository.findById(branchId).get();
+            Branch branch = branchRepository.findById(branchId).orElseThrow(
+                    ()-> GenericException.notFound(branchId)
+            );
             reservation.setBranchDepartment(branch);
-            Car car = carRepository.findById(reservation.getCar().getId()).get();
+            Car car = reservation.getCar();
             car.setStatus(Status.AVAILABLE);
             car.setBranch(branch);
             if (ChronoUnit.DAYS.between(reservation.getDateTo(),LocalDate.now())!=0){
                 Refund refund = new Refund();
                 refund.setReservation(reservation);
                 refund.setRefundDateOfReturn(LocalDate.now());
-                refund.setSurcharge(ChronoUnit.DAYS.between(reservation.getDateTo(),LocalDate.now())*car.getAmount());
+                refund.setSurcharge(ChronoUnit.DAYS.between(reservation.getDateTo(),LocalDate.now()) * car.getAmount());
                 refundService.createOrUpdate(refund);
                 revenueService.createOrUpdate(branch.getRental().getId(),refund.getSurcharge());
            } return reservationRepository.save(reservation);
@@ -111,13 +112,7 @@ public class ReservationServiceImpl implements ReservationService {
             throw GenericException.notFound(reservationId);
         }
     }
-    @Scheduled(cron = "0 00 01 * * ?", zone = "Europe/Rome")
-    public  void checkReservation(){
-        List<Reservation> reservations = reservationRepository.findAllByDateFromIsAfter(LocalDate.now());
-        reservations.forEach(reservation -> {
-                reservation.getCar().setStatus(Status.AVAILABLE);
-        });
-    }
+
 
     private Boolean isTimeWrong(Reservation reservation, LocalDate start, LocalDate end) {
         return ((start.isAfter(reservation.getDateFrom()) && start.isBefore(reservation.getDateTo()))

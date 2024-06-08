@@ -4,6 +4,8 @@ import com.sda.rentalcar.dto.AuthRequest;
 import com.sda.rentalcar.entities.Employee;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface EmployeeService {
     Employee create(Employee employee, boolean isManager,Long branchId);
 
@@ -18,4 +20,6 @@ public interface EmployeeService {
     Employee findByUsername(String username);
 
     Employee findEmployeeLoggedIn();
+
+    List<Employee> getAllEmployeesByBranch(Long branchId);
 }
