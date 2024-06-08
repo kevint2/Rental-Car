@@ -126,7 +126,9 @@ public class ReservationServiceImpl implements ReservationService {
                 }
             });
                 reservation.setDateTo(reservation.getDateTo().plusDays(days));
-                return reservationRepository.save(reservation);
+                 reservationRepository.save(reservation);
+                revenueService.createOrUpdate(reservation.getBranchLoan().getRental().getId(),days*car.getAmount());
+                return reservation;
         } else {
             throw new RuntimeException("This reservation is not made by a costumer.");
         }
