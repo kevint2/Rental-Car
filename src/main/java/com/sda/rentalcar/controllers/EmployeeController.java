@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -25,6 +27,10 @@ public class EmployeeController {
     @PostMapping("/createOwner")
     public Employee createOwner(@RequestBody Employee employee){
         return employeeService.createOwner(employee);
+    }
+    @GetMapping("getAllEmployeeByBranch")
+    public List<Employee>getAllEmployeeByBranch(@RequestParam Long branchId){
+        return employeeService.getAllEmployeesByBranch(branchId);
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest){

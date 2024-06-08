@@ -1,6 +1,5 @@
 package com.sda.rentalcar.services.Impl;
 import com.sda.rentalcar.entities.Branch;
-import com.sda.rentalcar.entities.Employee;
 import com.sda.rentalcar.entities.Rental;
 import com.sda.rentalcar.exceptions.GenericException;
 import com.sda.rentalcar.repositories.BranchRepository;
@@ -25,6 +24,7 @@ public class BranchServiceImpl implements BranchService {
         if (rentalRepository.findById(rentalId).isPresent()) {
             Rental rental = rentalRepository.findById(rentalId).get();
             branch.setRental(rental);
+            branch.setActive(true);
             return branchRepository.save(branch);
         } else {
             throw GenericException.idISNotnull();
@@ -34,5 +34,11 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public List<Branch> showAllByRental(Long rentalId) {
         return branchRepository.findAllByRentalId(rentalId);
+    }
+
+    @Override
+    public void closeBranch(Long branchId){
+        Branch branch = branchRepository.findById(branchId).orElseThrow(()->GenericException.notFound(branchId));
+        branch.setActive(false);
     }
 }

@@ -96,8 +96,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public List<Employee>getAllEmployeesByBranch(Long branchId){
-        Branch branch = branchRepository.findById(branchId).orElseThrow(()->GenericException.notFound(branchId));
-        return branch.getEmployees();
+    return employeeRepository.getAllByBranch_IdAndActiveIsTrue(branchId);
     }
 
 }

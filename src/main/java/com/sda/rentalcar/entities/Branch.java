@@ -26,4 +26,5 @@ public class Branch {
     @ManyToOne
     @JoinColumn(name = "rental")
     private Rental rental;
+    private Boolean active;
 }

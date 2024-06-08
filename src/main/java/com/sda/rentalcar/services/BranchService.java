@@ -10,4 +10,6 @@ public interface BranchService {
 
 
     List<Branch> showAllByRental(Long rentalId);
+
+    void closeBranch(Long branchId);
 }

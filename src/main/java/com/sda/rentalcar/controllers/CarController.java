@@ -1,5 +1,6 @@
 package com.sda.rentalcar.controllers;
 
+import com.sda.rentalcar.dto.FilterDto;
 import com.sda.rentalcar.entities.Car;
 import com.sda.rentalcar.services.CarService;
 import com.sda.rentalcar.static_data.Status;
@@ -22,6 +23,10 @@ public class CarController {
     public Car updateStatusToUnavailable(@RequestParam Long carId , @RequestBody Status status){
         return carService.updateStatus(carId,status);
     }
+    @PutMapping("update")
+    public Car update(@RequestParam Long carId ,@RequestParam Long mileage){
+        return carService.update(carId,mileage);
+    }
     @GetMapping("/findCarById")
     public Car findById(@RequestParam Long carId){
       return   carService.findById(carId);
@@ -29,6 +34,10 @@ public class CarController {
     @GetMapping("/getAllCarAvailableByBranch")
     public List<Car>getAllAvailableCar(@RequestParam Long branchId){
         return carService.getAllCarAvailable(branchId);
+    }
+    @PostMapping ("filter")
+    public List<Car>filterCars(@RequestBody FilterDto filterDto){
+        return  carService.findByFilter(filterDto);
     }
     @GetMapping("/getAllByBrand")
     public List<Car>getAllByModel(@RequestParam String brand){
