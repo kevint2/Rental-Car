@@ -1,0 +1,86 @@
+.app-header {
+  background-color: #1f2933;
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.app-header nav a {
+  margin-right: 1rem;
+  text-decoration: none;
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
+.app-header nav a.active {
+  color: #4ade80;
+}
+
+.app-container {
+  padding: 1.5rem;
+}
+
+section.card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  margin-bottom: 1.5rem;
+}
+
+form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+input, select {
+  padding: 0.5rem;
+  margin-top: 0.35rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+button.primary {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+}
+
+button.secondary {
+  background-color: #f97316;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.table th {
+  color: #6b7280;
+  font-size: 0.9rem;
+}

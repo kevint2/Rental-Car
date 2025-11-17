@@ -1,0 +1,14 @@
+<header class="app-header">
+  <div class="branding">
+    <h1>{{ title }}</h1>
+    <p>Menaxho flotën, rezervimet dhe raportet në një vend.</p>
+  </div>
+  <nav>
+    <a routerLink="/cars" routerLinkActive="active">Makinat</a>
+    <a routerLink="/reservations" routerLinkActive="active">Rezervimet</a>
+    <a routerLink="/reports" routerLinkActive="active">Raportet Mujore</a>
+  </nav>
+</header>
+<main class="app-container">
+  <router-outlet></router-outlet>
+</main>
