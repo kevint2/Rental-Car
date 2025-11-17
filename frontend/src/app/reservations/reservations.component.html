@@ -1,0 +1,68 @@
+<section class="card">
+  <h2>Rezervimet Aktive</h2>
+  <p *ngIf="message" class="message">{{ message }}</p>
+  <table class="table" *ngIf="reservations.length">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Rezervuar</th>
+      <th>Nga</th>
+      <th>Deri</th>
+      <th>Çmimi</th>
+      <th>Statusi</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let reservation of reservations">
+      <td>{{ reservation.id }}</td>
+      <td>{{ reservation.bookingDate }}</td>
+      <td>{{ reservation.dateFrom }}</td>
+      <td>{{ reservation.dateTo }}</td>
+      <td>{{ reservation.amount | currency:'EUR' }}</td>
+      <td>
+        <span *ngIf="reservation.cancelled">Anulluar</span>
+        <span *ngIf="!reservation.cancelled">Aktive</span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="card">
+  <h3>Krijo rezervim</h3>
+  <form [formGroup]="reservationForm" (ngSubmit)="submitReservation()">
+    <label>ID e makinës<input type="number" formControlName="carId"></label>
+    <label>Email i klientit<input formControlName="costumerEmail"></label>
+    <label>Koment<input formControlName="comment"></label>
+    <label>Data nisjes<input type="date" formControlName="dateFrom"></label>
+    <label>Data kthimit<input type="date" formControlName="dateTo"></label>
+    <button class="primary" type="submit">Ruaj rezervimin</button>
+  </form>
+</section>
+
+<section class="card">
+  <h3>Kthe makinën</h3>
+  <form [formGroup]="returnForm" (ngSubmit)="submitReturn()">
+    <label>ID e rezervimit<input type="number" formControlName="reservationId"></label>
+    <label>ID e degës së dorëzimit<input type="number" formControlName="branchId"></label>
+    <button class="secondary" type="submit">Kthe</button>
+  </form>
+</section>
+
+<section class="card">
+  <h3>Anulo rezervim</h3>
+  <form [formGroup]="cancelForm" (ngSubmit)="submitCancel()">
+    <label>ID e rezervimit<input type="number" formControlName="reservationId"></label>
+    <button class="secondary" type="submit">Anulo</button>
+  </form>
+</section>
+
+<section class="card">
+  <h3>Zgjat rezervimin</h3>
+  <form [formGroup]="extendForm" (ngSubmit)="submitExtend()">
+    <label>ID e rezervimit<input type="number" formControlName="reservationId"></label>
+    <label>Email i klientit<input formControlName="email"></label>
+    <label>Ditë shtesë<input type="number" formControlName="days"></label>
+    <button class="secondary" type="submit">Zgjat</button>
+  </form>
+</section>

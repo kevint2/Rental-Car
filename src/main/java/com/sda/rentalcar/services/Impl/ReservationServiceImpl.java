@@ -1,5 +1,7 @@
 package com.sda.rentalcar.services.Impl;
 
+import com.sda.rentalcar.dto.MonthlyCancellationBalanceResponse;
+import com.sda.rentalcar.dto.MonthlyReservationBalanceResponse;
 import com.sda.rentalcar.entities.*;
 import com.sda.rentalcar.exceptions.GenericException;
 import com.sda.rentalcar.repositories.*;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -54,6 +57,10 @@ public class ReservationServiceImpl implements ReservationService {
                 Costumer costumer = costumerRepository.findByEmail(costumerEmail);
                 costumer.setRental(car.getBranch().getRental());
                 reservation.setCostumer(costumer);
+                reservation.setBookingDate(LocalDate.now());
+                reservation.setCancelled(false);
+                reservation.setCancellationDate(null);
+                reservation.setCancellationPenalty(null);
                 reservation.setAmount(
                         (ChronoUnit.DAYS.between(reservation.getDateFrom()
                                 , reservation.getDateTo()) * car.getAmount()));
@@ -102,11 +109,17 @@ public class ReservationServiceImpl implements ReservationService {
         if (reservationRepository.findById(reservationId).isPresent()){
             Reservation reservation = reservationRepository.findById(reservationId).get();
             reservation.getCar().setStatus(Status.AVAILABLE);
+            Double penalty;
             if (ChronoUnit.DAYS.between(LocalDate.now(),reservation.getDateFrom())<=2){
-               revenueService.createOrUpdate(reservation.getBranchLoan().getRental().getId(),reservation.getAmount()*-0.8);
+                penalty = reservation.getAmount()*-0.8;
             }else {
-                revenueService.createOrUpdate(reservation.getBranchLoan().getRental().getId(),reservation.getAmount()*-1);
+                penalty = reservation.getAmount()*-1;
             }
+            reservation.setCancelled(true);
+            reservation.setCancellationDate(LocalDate.now());
+            reservation.setCancellationPenalty(penalty);
+            revenueService.createOrUpdate(reservation.getBranchLoan().getRental().getId(),penalty);
+            reservationRepository.save(reservation);
         }else {
             throw GenericException.notFound(reservationId);
         }
@@ -143,6 +156,35 @@ public class ReservationServiceImpl implements ReservationService {
                 || (start.equals(reservation.getDateFrom()) || end.equals(reservation.getDateTo()))
                 || start.isAfter(end)
                 || start.isAfter(LocalDate.now()));
+    }
+
+    @Override
+    public List<MonthlyReservationBalanceResponse> getMonthlyReservationBalances() {
+        return reservationRepository.findMonthlyReservationBalances().stream()
+                .map(result -> new MonthlyReservationBalanceResponse(
+                        result.getYear(),
+                        result.getMonth(),
+                        result.getTotalReservations(),
+                        result.getTotalAmount()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MonthlyCancellationBalanceResponse> getMonthlyCancellationBalances() {
+        return reservationRepository.findMonthlyCancellationBalances().stream()
+                .map(result -> new MonthlyCancellationBalanceResponse(
+                        result.getYear(),
+                        result.getMonth(),
+                        result.getTotalCancellations(),
+                        result.getTotalPenalty()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Reservation> findAll() {
+        return reservationRepository.findAll();
     }
 
 

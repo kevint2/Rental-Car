@@ -16,6 +16,9 @@ public interface CarRepository extends JpaRepository<Car,Long> , JpaSpecificatio
     Optional<Car> findById(Long id);
     List<Car> findAllByBranchIdAndStatus(Long branchId , Status status);
 
-    @Query("select c from Car c inner join Reservation r on r.car = c where r.dateFrom = :localDate")
-    List<Car> findAllByDate(LocalDate localDate);
+    @Query("select c from Car c inner join Reservation r on r.car = c where :localDate between r.dateFrom and r.dateTo")
+    List<Car> findAllReservedOnDate(LocalDate localDate);
+
+    @Query("select c from Car c inner join Reservation r on r.car = c where r.dateTo < :localDate")
+    List<Car> findAllReservationsEndedBefore(LocalDate localDate);
 }
