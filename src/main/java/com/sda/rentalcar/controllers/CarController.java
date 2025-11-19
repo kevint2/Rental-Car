@@ -1,46 +1,88 @@
 package com.sda.rentalcar.controllers;
 
+import com.sda.rentalcar.dto.CarCreateRequest;
+import com.sda.rentalcar.dto.CarMileageUpdateRequest;
+import com.sda.rentalcar.dto.CarResponse;
+import com.sda.rentalcar.dto.CarStatusUpdateRequest;
 import com.sda.rentalcar.dto.FilterDto;
 import com.sda.rentalcar.entities.Car;
 import com.sda.rentalcar.services.CarService;
-import com.sda.rentalcar.static_data.Status;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/car")
 public class CarController {
-    @Autowired
-    private CarService carService;
+
+    private final CarService carService;
+
+    public CarController(CarService carService) {
+        this.carService = carService;
+    }
 
     @PostMapping("/create")
-    public Car create(@RequestBody Car car , @RequestParam Long branchId){
-        return carService.create(car,branchId);
+    public ResponseEntity<CarResponse> create(@Valid @RequestBody CarCreateRequest request) {
+        Car created = carService.create(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CarResponse.from(created));
     }
-    @PutMapping("/updateStatusToUnavailable")
-    public Car updateStatusToUnavailable(@RequestParam Long carId , @RequestBody Status status){
-        return carService.updateStatus(carId,status);
+
+    @PutMapping("/status")
+    public ResponseEntity<CarResponse> updateStatus(@RequestParam Long carId,
+                                                    @Valid @RequestBody CarStatusUpdateRequest request) {
+        Car updated = carService.updateStatus(carId, request.getStatus());
+        return ResponseEntity.ok(CarResponse.from(updated));
     }
-    @PutMapping("update")
-    public Car update(@RequestParam Long carId ,@RequestParam Long mileage){
-        return carService.update(carId,mileage);
+
+    @PutMapping("/mileage")
+    public ResponseEntity<CarResponse> updateMileage(@RequestParam Long carId,
+                                                     @Valid @RequestBody CarMileageUpdateRequest request) {
+        Car updated = carService.updateMileage(carId, request.getMileage());
+        return ResponseEntity.ok(CarResponse.from(updated));
     }
+
     @GetMapping("/findCarById")
-    public Car findById(@RequestParam Long carId){
-      return   carService.findById(carId);
+    public ResponseEntity<CarResponse> findById(@RequestParam Long carId) {
+        return ResponseEntity.ok(CarResponse.from(carService.findById(carId)));
     }
+
     @GetMapping("/getAllCarAvailableByBranch")
-    public List<Car>getAllAvailableCar(@RequestParam Long branchId){
-        return carService.getAllCarAvailable(branchId);
+    public ResponseEntity<List<CarResponse>> getAllAvailableCar(@RequestParam Long branchId) {
+        List<CarResponse> responses = carService.getAllCarAvailable(branchId)
+                .stream()
+                .map(CarResponse::from)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
-    @PostMapping ("filter")
-    public List<Car>filterCars(@RequestBody FilterDto filterDto){
-        return  carService.findByFilter(filterDto);
+
+    @PostMapping("/filter")
+    public ResponseEntity<List<CarResponse>> filterCars(@RequestBody FilterDto filterDto) {
+        List<CarResponse> responses = carService.findByFilter(filterDto)
+                .stream()
+                .map(CarResponse::from)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
+
     @GetMapping("/getAllByBrand")
-    public List<Car>getAllByModel(@RequestParam String brand){
-        return carService.findAllByBrand(brand);
+    public ResponseEntity<List<CarResponse>> getAllByModel(@RequestParam String brand) {
+        List<CarResponse> responses = carService.findAllByBrand(brand)
+                .stream()
+                .map(CarResponse::from)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CarResponse>> getAll() {
+        List<CarResponse> responses = carService.findAll()
+                .stream()
+                .map(CarResponse::from)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
 }

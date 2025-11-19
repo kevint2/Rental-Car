@@ -1,0 +1,69 @@
+<section class="card">
+  <h2>Flota e Makinave</h2>
+  <p *ngIf="loading">Duke ngarkuar...</p>
+  <p class="message" *ngIf="message">{{ message }}</p>
+  <table class="table" *ngIf="cars.length">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Marka</th>
+      <th>Modeli</th>
+      <th>Viti</th>
+      <th>Ngjyra</th>
+      <th>Statusi</th>
+      <th>Km</th>
+      <th>Çmimi/ditë</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let car of cars">
+      <td>{{ car.id }}</td>
+      <td>{{ car.brand }}</td>
+      <td>{{ car.model }}</td>
+      <td>{{ car.year }}</td>
+      <td>{{ car.color }}</td>
+      <td>{{ car.status }}</td>
+      <td>{{ car.mileage | number }}</td>
+      <td>{{ car.amount | currency:'EUR' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="card">
+  <h3>Shto makinë</h3>
+  <form [formGroup]="carForm" (ngSubmit)="submitCar()">
+    <label>Marka<input formControlName="brand"></label>
+    <label>Modeli<input formControlName="model"></label>
+    <label>Karroceria<input formControlName="bodyType"></label>
+    <label>Viti<input type="number" formControlName="year"></label>
+    <label>Ngjyra<input formControlName="color"></label>
+    <label>Kilometra<input type="number" formControlName="mileage"></label>
+    <label>Çmimi/ditë<input type="number" formControlName="amount"></label>
+    <label>Foto (URL)<input formControlName="imageUrl"></label>
+    <label>Dega<input type="number" formControlName="branchId"></label>
+    <button class="primary" type="submit">Ruaj</button>
+  </form>
+</section>
+
+<section class="card">
+  <h3>Përditëso kilometrazhin</h3>
+  <form [formGroup]="mileageForm" (ngSubmit)="submitMileage()">
+    <label>ID e makinës<input type="number" formControlName="carId"></label>
+    <label>Kilometra të reja<input type="number" formControlName="mileage"></label>
+    <button class="secondary" type="submit">Përditëso</button>
+  </form>
+</section>
+
+<section class="card">
+  <h3>Ndrysho statusin</h3>
+  <form [formGroup]="statusForm" (ngSubmit)="submitStatus()">
+    <label>ID e makinës<input type="number" formControlName="carId"></label>
+    <label>Statusi
+      <select formControlName="status">
+        <option *ngFor="let status of carStatuses" [value]="status">{{ status }}</option>
+      </select>
+    </label>
+    <button class="secondary" type="submit">Ndrysho</button>
+  </form>
+</section>

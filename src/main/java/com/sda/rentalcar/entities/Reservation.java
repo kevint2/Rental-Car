@@ -35,4 +35,7 @@ public class Reservation {
     @JoinColumn(name = "branch_department")
     private Branch branchDepartment;
     private Double amount;
+    private boolean cancelled;
+    private LocalDate cancellationDate;
+    private Double cancellationPenalty;
 }
