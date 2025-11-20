@@ -13,6 +13,20 @@ npm run build      # prodhon artefaktet në dist/
 
 Zhvillimi supozon që backend-i Java të jetë duke punuar në `http://localhost:8080`. Proxy `proxy.conf.json` rimer API-t `/car` dhe `/reservation` për të shmangur CORS.
 
+### Nëse merr gabimin "The injectable 'PlatformNavigation' needs to be compiled using the JIT compiler"
+
+Ky gabim shfaqet kur komponentet ekzekutohen me `tsx`/`ts-node` ose me një version të pasuportuar të Node (p.sh. v22/v25) që nuk kalon nëpër Angular Linker. Angular 17 pret që libraritë e `node_modules` të procesohen nga CLI (`ng serve`, `ng test`, `ng build`).
+
+1. Përdor vetëm komandat e Angular CLI (`npm start`, `npm test`, `npm run build`) në vend që të startosh `cars.component.ts` apo skedarë të veçantë me `tsx`/`ts-node` në IDE.
+2. Sigurohu që je në një version të suportuar të Node (18.x ose 20.x). Me `nvm` mund ta kalosh shpejt:
+   ```bash
+   nvm use 20
+   rm -rf node_modules package-lock.json
+   npm install
+   ```
+3. Në IDE (p.sh. WebStorm) krijo një run configuration të tipit **Angular CLI** (jo Node/tsx) që thërret `ng serve` me `--proxy-config proxy.conf.json` në rrënjën `frontend/`.
+4. Nëse ke ende cache të prishura, fshij `node_modules`, riinstalo varësitë dhe rifillo dev server-in.
+
 ## Mjediset
 
 - `src/environments/environment.ts` → përdoret gjatë zhvillimit.
