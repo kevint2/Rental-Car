@@ -50,7 +50,7 @@ export class CarsComponent implements OnInit {
         this.loading = false;
       },
       error: () => {
-        this.message = 'Nuk mund të ngarkohen makinat.';
+        this.message = 'Could not load cars.';
         this.loading = false;
       }
     });
@@ -62,11 +62,11 @@ export class CarsComponent implements OnInit {
     }
     this.api.createCar(this.carForm.getRawValue() as any).subscribe({
       next: () => {
-        this.message = 'Makina u shtua me sukses.';
-        this.carForm.reset({ year: 2024, mileage: 0, amount: 0, status: 'AVAILABLE' });
+        this.message = 'Car added successfully.';
+        this.carForm.reset({ year: 2024, mileage: 0, amount: 0 });
         this.loadCars();
       },
-      error: () => (this.message = 'Shtimi dështoi, kontrollo të dhënat.')
+      error: () => (this.message = 'Saving failed, please check the data.')
     });
   }
 
@@ -77,10 +77,10 @@ export class CarsComponent implements OnInit {
     const { carId, mileage } = this.mileageForm.getRawValue();
     this.api.updateMileage(Number(carId), Number(mileage)).subscribe({
       next: () => {
-        this.message = 'Kilometrat u përditësuan.';
+        this.message = 'Mileage updated.';
         this.loadCars();
       },
-      error: () => (this.message = 'Përditësimi i kilometrave dështoi.')
+      error: () => (this.message = 'Updating mileage failed.')
     });
   }
 
@@ -91,10 +91,10 @@ export class CarsComponent implements OnInit {
     const { carId, status } = this.statusForm.getRawValue();
     this.api.updateStatus(Number(carId), String(status)).subscribe({
       next: () => {
-        this.message = 'Statusi u ndryshua.';
+        this.message = 'Status updated.';
         this.loadCars();
       },
-      error: () => (this.message = 'Ndryshimi i statusit dështoi.')
+      error: () => (this.message = 'Status change failed.')
     });
   }
 }

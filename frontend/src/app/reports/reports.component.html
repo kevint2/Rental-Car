@@ -1,11 +1,11 @@
 <section class="card">
-  <h2>Bilanci i rezervimeve të përfunduara</h2>
+  <h2>Balance of completed reservations</h2>
   <table class="table" *ngIf="completed.length">
     <thead>
     <tr>
-      <th>Muaji</th>
-      <th>Rezervime</th>
-      <th>Të ardhurat</th>
+      <th>Month</th>
+      <th>Reservations</th>
+      <th>Revenue</th>
     </tr>
     </thead>
     <tbody>
@@ -19,13 +19,13 @@
 </section>
 
 <section class="card">
-  <h2>Bilanci i rezervimeve të anuluara</h2>
+  <h2>Balance of cancelled reservations</h2>
   <table class="table" *ngIf="cancelled.length">
     <thead>
     <tr>
-      <th>Muaji</th>
-      <th>Anullime</th>
-      <th>Penalitete</th>
+      <th>Month</th>
+      <th>Cancellations</th>
+      <th>Penalties</th>
     </tr>
     </thead>
     <tbody>

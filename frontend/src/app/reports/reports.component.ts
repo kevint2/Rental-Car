@@ -26,6 +26,6 @@ export class ReportsComponent implements OnInit {
   }
 
   monthName(month: number): string {
-    return new Date(2023, month - 1, 1).toLocaleString('sq-AL', { month: 'long' });
+    return new Date(2023, month - 1, 1).toLocaleString('en-US', { month: 'long' });
   }
 }

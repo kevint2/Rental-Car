@@ -1,18 +1,18 @@
 <section class="card">
-  <h2>Flota e Makinave</h2>
-  <p *ngIf="loading">Duke ngarkuar...</p>
+  <h2>Car Fleet</h2>
+  <p *ngIf="loading">Loading...</p>
   <p class="message" *ngIf="message">{{ message }}</p>
   <table class="table" *ngIf="cars.length">
     <thead>
     <tr>
       <th>ID</th>
-      <th>Marka</th>
-      <th>Modeli</th>
-      <th>Viti</th>
-      <th>Ngjyra</th>
-      <th>Statusi</th>
+      <th>Brand</th>
+      <th>Model</th>
+      <th>Year</th>
+      <th>Color</th>
+      <th>Status</th>
       <th>Km</th>
-      <th>Çmimi/ditë</th>
+      <th>Price/day</th>
     </tr>
     </thead>
     <tbody>
@@ -31,39 +31,39 @@
 </section>
 
 <section class="card">
-  <h3>Shto makinë</h3>
+  <h3>Add a car</h3>
   <form [formGroup]="carForm" (ngSubmit)="submitCar()">
-    <label>Marka<input formControlName="brand"></label>
-    <label>Modeli<input formControlName="model"></label>
-    <label>Karroceria<input formControlName="bodyType"></label>
-    <label>Viti<input type="number" formControlName="year"></label>
-    <label>Ngjyra<input formControlName="color"></label>
-    <label>Kilometra<input type="number" formControlName="mileage"></label>
-    <label>Çmimi/ditë<input type="number" formControlName="amount"></label>
-    <label>Foto (URL)<input formControlName="imageUrl"></label>
-    <label>Dega<input type="number" formControlName="branchId"></label>
-    <button class="primary" type="submit">Ruaj</button>
+    <label>Brand<input formControlName="brand"></label>
+    <label>Model<input formControlName="model"></label>
+    <label>Body type<input formControlName="bodyType"></label>
+    <label>Year<input type="number" formControlName="year"></label>
+    <label>Color<input formControlName="color"></label>
+    <label>Mileage<input type="number" formControlName="mileage"></label>
+    <label>Price/day<input type="number" formControlName="amount"></label>
+    <label>Image (URL)<input formControlName="imageUrl"></label>
+    <label>Branch<input type="number" formControlName="branchId"></label>
+    <button class="primary" type="submit">Save</button>
   </form>
 </section>
 
 <section class="card">
-  <h3>Përditëso kilometrazhin</h3>
+  <h3>Update mileage</h3>
   <form [formGroup]="mileageForm" (ngSubmit)="submitMileage()">
-    <label>ID e makinës<input type="number" formControlName="carId"></label>
-    <label>Kilometra të reja<input type="number" formControlName="mileage"></label>
-    <button class="secondary" type="submit">Përditëso</button>
+    <label>Car ID<input type="number" formControlName="carId"></label>
+    <label>New mileage<input type="number" formControlName="mileage"></label>
+    <button class="secondary" type="submit">Update</button>
   </form>
 </section>
 
 <section class="card">
-  <h3>Ndrysho statusin</h3>
+  <h3>Change status</h3>
   <form [formGroup]="statusForm" (ngSubmit)="submitStatus()">
-    <label>ID e makinës<input type="number" formControlName="carId"></label>
-    <label>Statusi
+    <label>Car ID<input type="number" formControlName="carId"></label>
+    <label>Status
       <select formControlName="status">
         <option *ngFor="let status of carStatuses" [value]="status">{{ status }}</option>
       </select>
     </label>
-    <button class="secondary" type="submit">Ndrysho</button>
+    <button class="secondary" type="submit">Update</button>
   </form>
 </section>
