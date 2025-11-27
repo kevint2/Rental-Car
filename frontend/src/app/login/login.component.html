@@ -1,0 +1,28 @@
+<section class="card login-card">
+  <h2>Employee login</h2>
+  <p class="subtitle">Use existing credentials to authenticate against /employee/login.</p>
+
+  <form [formGroup]="loginForm" (ngSubmit)="submit()" class="login-form">
+    <label>
+      Username
+      <input type="text" formControlName="username" placeholder="Username" />
+      <small *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+        Username is required.
+      </small>
+    </label>
+
+    <label>
+      Password
+      <input type="password" formControlName="password" placeholder="Password" />
+      <small *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+        Password is required.
+      </small>
+    </label>
+
+    <button class="primary" type="submit" [disabled]="submitting">Sign in</button>
+  </form>
+
+  <div *ngIf="feedback" class="feedback" [class.error]="hasError" [class.success]="!hasError">
+    {{ feedback }}
+  </div>
+</section>

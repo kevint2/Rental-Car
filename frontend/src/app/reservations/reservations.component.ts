@@ -44,7 +44,7 @@ export class ReservationsComponent implements OnInit {
   loadReservations(): void {
     this.api.getReservations().subscribe({
       next: reservations => (this.reservations = reservations),
-      error: () => (this.message = 'Nuk mund të ngarkohen rezervimet.')
+      error: () => (this.message = 'Could not load reservations.')
     });
   }
 
@@ -57,10 +57,10 @@ export class ReservationsComponent implements OnInit {
       .createReservation({ dateFrom: String(dateFrom), dateTo: String(dateTo) }, Number(carId), String(costumerEmail), String(comment || ''))
       .subscribe({
         next: () => {
-          this.message = 'Rezervimi u krijua.';
+          this.message = 'Reservation created.';
           this.loadReservations();
         },
-        error: () => (this.message = 'Krijimi i rezervimit dështoi.')
+        error: () => (this.message = 'Creating the reservation failed.')
       });
   }
 
@@ -71,10 +71,10 @@ export class ReservationsComponent implements OnInit {
     const { reservationId, branchId } = this.returnForm.getRawValue();
     this.api.returnCar(Number(reservationId), Number(branchId)).subscribe({
       next: () => {
-        this.message = 'Makina u kthye.';
+        this.message = 'Car returned.';
         this.loadReservations();
       },
-      error: () => (this.message = 'Kthimi dështoi.')
+      error: () => (this.message = 'Return failed.')
     });
   }
 
@@ -85,10 +85,10 @@ export class ReservationsComponent implements OnInit {
     const { reservationId } = this.cancelForm.getRawValue();
     this.api.cancelReservation(Number(reservationId)).subscribe({
       next: () => {
-        this.message = 'Rezervimi u anulua.';
+        this.message = 'Reservation cancelled.';
         this.loadReservations();
       },
-      error: () => (this.message = 'Anulimi dështoi.')
+      error: () => (this.message = 'Cancellation failed.')
     });
   }
 
@@ -99,10 +99,10 @@ export class ReservationsComponent implements OnInit {
     const { reservationId, email, days } = this.extendForm.getRawValue();
     this.api.extendReservation(Number(reservationId), String(email), Number(days)).subscribe({
       next: () => {
-        this.message = 'Rezervimi u zgjat.';
+        this.message = 'Reservation extended.';
         this.loadReservations();
       },
-      error: () => (this.message = 'Zgjatja dështoi.')
+      error: () => (this.message = 'Extension failed.')
     });
   }
 }

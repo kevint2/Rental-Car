@@ -29,6 +29,11 @@ export interface ReservationPayload {
   dateTo: string;
 }
 
+export interface AuthRequest {
+  username: string;
+  password: string;
+}
+
 export interface Reservation {
   id: number;
   bookingDate: string;

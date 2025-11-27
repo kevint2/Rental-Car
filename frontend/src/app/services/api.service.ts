@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import {
+  AuthRequest,
   CarResponse,
   CreateCarRequest,
   Reservation,
@@ -33,6 +34,10 @@ export class ApiService {
   updateStatus(carId: number, status: string): Observable<CarResponse> {
     const params = new HttpParams().set('carId', carId);
     return this.http.put<CarResponse>(`${this.baseUrl}/car/status`, { status }, { params });
+  }
+
+  login(payload: AuthRequest): Observable<boolean> {
+    return this.http.post<boolean>(`${this.baseUrl}/employee/login`, payload);
   }
 
   getReservations(): Observable<Reservation[]> {
